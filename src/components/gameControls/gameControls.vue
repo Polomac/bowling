@@ -1,7 +1,7 @@
 <template>
   <div class="controls-wrapper">
-    <button class="ripple green raised" @click="restart" v-show="frames.length > 0">Restart Game</button>
     <button class="ripple blue raised" @click="frameAction" :disabled="disabled" :class="{'disabled' : disabled}">Roll</button>
+    <button class="ripple green raised" @click="restart" v-if="frames.length > 0">Restart Game</button>
   </div>
 </template>
 

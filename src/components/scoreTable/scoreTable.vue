@@ -10,12 +10,12 @@
         <span v-if="hasPoints(frame) && !frame.strike">{{lastStrike(frame.framePoints[0])}}</span>
       </div>
       <div class="frame-roll spare">
-        <span v-if="frame.spare">/</span>
-        <span v-if="hasPoints(frame) && !frame.strike && !frame.spare">{{frame.framePoints[1]}}</span>
+        <span v-if="frame.spare && frame.id < 10">/</span>
+        <span v-if="hasPoints(frame) && !frame.strike && frame.id < 10 && !frame.spare">{{frame.framePoints[1]}}</span>
+        <span v-if="hasPoints(frame) && !frame.strike && frame.id === 10">{{frame.framePoints[1]}}</span>
       </div>
       <div class="frame-roll spare" v-if="frame.id === 10">
-        <span v-if="frame.spare">/</span>
-        <span v-if="hasPoints(frame) && !frame.strike && !frame.spare">{{frame.framePoints[2]}}</span>
+        <span v-if="hasPoints(frame) && !frame.strike">{{lastSpare(frame.framePoints)}}</span>
       </div>
       <div class="points">
         <span v-if="frame.framePoints && frame.framePoints.length > 0">{{frameResult(frame.framePoints)}}</span>
@@ -44,6 +44,9 @@ export default {
     },
     lastStrike(pins) {
       return pins === 10 ? 'X' : pins;
+    },
+    lastSpare(pins) {
+      return pins[2] === 10 ? 'X' : pins[0] + pins[1] + pins[2] === 10 ? '/' : pins[2];
     },
   },
 };

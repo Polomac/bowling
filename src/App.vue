@@ -1,28 +1,44 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Bowling score</h1>
+    <div class="content">
+      <score-table :key="i"></score-table>
+      <game-controls @update="update"></game-controls>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
-
+const scoreTable = () => import('./components/scoreTable/scoreTable.vue');
+const gameControls = () => import('./components/gameControls/gameControls.vue');
+import { mapGetters } from 'vuex';
 export default {
   name: 'app',
+  data() {
+    return {
+      i: 1,
+    };
+  },
+  methods: {
+    update() {
+      this.i++;
+    },
+  },
   components: {
-    HelloWorld,
+    scoreTable,
+    gameControls,
   },
 };
 </script>
 
 <style lang="scss">
+@import './assets/reset.scss';
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  width: 100%;
+  padding: 10px;
+  margin: 0 auto;
+  @include mqBPoint(800px) {
+    width: 800px;
+  }
 }
 </style>

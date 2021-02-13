@@ -27,6 +27,12 @@ export default {
     },
     setFramePoints(leftPins) {
       this.framePoints.push((this.tempPins - leftPins));
+      if(this.frameNumber > 0 && this.frames[this.frameNumber - 1].strike && this.rollNumber === 2) {
+        this.frames[this.frameNumber - 1].framePoints.push(this.framePoints.reduce((a,b) => a + b, 0));
+      } else if(this.frameNumber > 0 && this.frames[this.frameNumber - 1].spare && this.rollNumber === 2) {
+        this.frames[this.frameNumber - 1].framePoints.push(this.framePoints[0]);
+      }
+
     },
     setTempFrame(isStrike, isSpare) {
       this.frames[this.frameNumber]= {

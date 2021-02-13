@@ -13,7 +13,7 @@ export default {
     return {
       frames: [],
       rollNumber: 1,
-      tempPins: 10,
+      tempPins: 11,
       framePoints: [],
       frameNumber: 0,
       disabled: false,
@@ -23,34 +23,33 @@ export default {
     ...mapMutations(['resetFrames']),
     ...mapActions(['setFrames']),
     droppedPins(min, max) {
-      return max === 1 ? Math.round(Math.random()) : Math.round(Math.random() * (max - min) + min);
+      return max === min ? max : Math.floor(Math.random() * (max - min + 1) + min);
+    },
+    setFramePoints(leftPins) {
+      this.framePoints.push((this.tempPins - leftPins));
+    },
+    setTempFrame(isStrike, isSpare) {
+      this.frames[this.frameNumber]= {
+        strike: isStrike,
+        framePoints: this.framePoints,
+        spare: isSpare,
+        id: this.frameNumber + 1,
+      };
     },
     frameAction() {
       this.disabled = true;
-      let leftPins = this.tempPins - this.droppedPins(0,this.tempPins);
-
+      let leftPins = this.tempPins - this.droppedPins(0, this.tempPins);
+      this.setFramePoints(leftPins);
       if (leftPins === 0 && this.rollNumber === 1) {
-        console.log(this.tempPins,leftPins)
-        this.framePoints.push((this.tempPins - leftPins));
-        this.frames[this.frameNumber] = {
-          strike: true,
-          framePoints: this.framePoints,
-          spare: false,
-          id: this.frameNumber + 1,
-        };
-
+        let isStrike = true;
+        let isSpare = false;
+        this.setTempFrame(isStrike, isSpare);
         this.frameNumber < 9 ? this.rollNumber += 2 : this.rollNumber += 1;
 
-      } else if (leftPins > 0) {
-        this.framePoints.push(this.tempPins - leftPins);
-        console.log(leftPins);
-        this.frames[this.frameNumber]= {
-          strike: false,
-          framePoints: this.framePoints,
-          spare: leftPins === 0,
-          id: this.frameNumber + 1,
-        };
-
+      } else if (leftPins >= 0 && this.rollNumber >= 1) {
+        let isStrike = false;
+        let isSpare = leftPins === 0 && this.rollNumber <= 3;
+        this.setTempFrame(isStrike, isSpare);
         this.rollNumber += 1;
         this.tempPins = leftPins;
       }
@@ -59,7 +58,6 @@ export default {
         frameNumber: this.frameNumber,
       }).then((resp) => {
         if (resp) {
-          console.log(resp, this.disabled);
           this.disabled = false;
         }
       });

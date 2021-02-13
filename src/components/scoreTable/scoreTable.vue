@@ -5,17 +5,17 @@
       <div class="frame-number">
         {{frame.id}}
       </div>
-      <div class="frame-strike">
+      <div class="frame-roll">
         <span v-if="frame.strike">X</span>
-        <span v-if="frame && frame.framePoints && !frame.strike">{{frame.framePoints[0]}}</span>
+        <span v-if="hasPoints(frame) && !frame.strike">{{lastStrike(frame.framePoints[0])}}</span>
       </div>
-      <div class="frame-spare">
+      <div class="frame-roll spare">
         <span v-if="frame.spare">/</span>
-        <span v-if="frame && frame.framePoints && !frame.strike && !frame.spare">{{frame.framePoints[1]}}</span>
+        <span v-if="hasPoints(frame) && !frame.strike && !frame.spare">{{frame.framePoints[1]}}</span>
       </div>
-      <div class="frame-spare" v-if="frame.id === 10">
+      <div class="frame-roll spare" v-if="frame.id === 10">
         <span v-if="frame.spare">/</span>
-        <span v-if="frame && frame.framePoints && !frame.strike && !frame.spare">{{frame.framePoints[2]}}</span>
+        <span v-if="hasPoints(frame) && !frame.strike && !frame.spare">{{frame.framePoints[2]}}</span>
       </div>
       <div class="points">
         <span v-if="frame.framePoints && frame.framePoints.length > 0">{{frameResult(frame.framePoints)}}</span>
@@ -32,7 +32,6 @@ export default {
     ...mapGetters(['frames']),
     totalPoints() {
       let pointsArr = this.frames.map((el) => el.framePoints && el.framePoints.length > 0 ? el.framePoints : []);
-      console.log('POINTS', pointsArr);
       return pointsArr.flat().reduce((a,b) => a+b, 0);
     },
   },
@@ -40,10 +39,13 @@ export default {
     frameResult(framePoints) {
       return framePoints.reduce((a,b) => a+b);
     },
+    hasPoints(frame) {
+      return frame && frame.framePoints;
+    },
+    lastStrike(pins) {
+      return pins === 10 ? 'X' : pins;
+    },
   },
-  mounted() {
-    console.log(this.frames);
-  }
 };
 </script>
 
@@ -78,13 +80,13 @@ export default {
       width: 100%;
       border-bottom: 1px solid $primary;
     }
-    .frame-strike, .frame-spare {
+    .frame-roll {
       width: 50%;
       text-align: center;
       height: 20px;
-    }
-    .frame-spare{
-      border-left: 1px solid $primary;
+      &.spare {
+        border-left: 1px solid $primary;
+      }
     }
     .points {
       flex-grow: 2;
@@ -95,7 +97,7 @@ export default {
       min-width: 100%;
     }
     &.thirds {
-      .frame-strike, .frame-spare {
+      .frame-roll {
         width: calc(100% / 3);
       }
     }

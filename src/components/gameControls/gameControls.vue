@@ -54,11 +54,12 @@ export default {
 
       } else if (leftPins >= 0 && this.rollNumber >= 1) {
         let isStrike = false;
-        let isSpare = leftPins === 0 && this.rollNumber < 3;
+        let isSpare = leftPins === 0 && this.rollNumber <= 3;
         this.setTempFrame(isStrike, isSpare);
         this.rollNumber += 1;
         this.tempPins = leftPins;
       }
+
       this.setFrames({
         frames: this.frames,
         frameNumber: this.frameNumber,
@@ -67,10 +68,13 @@ export default {
           this.disabled = false;
         }
       });
+
       this.$emit('update');
+
       if (this.frameNumber >= 10) {
         this.restart();
       }
+
       if ((this.rollNumber > 2 && this.frameNumber < 9) || (this.rollNumber > 3 && this.frameNumber === 9)) {
         this.rollNumber = 1;
         this.framePoints = [];

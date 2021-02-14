@@ -12,10 +12,10 @@
       <div class="frame-roll spare">
         <span v-if="frame.spare && frame.id < 10">/</span>
         <span v-if="hasPoints(frame) && !frame.strike && frame.id < 10 && !frame.spare">{{frame.framePoints[1]}}</span>
-        <span v-if="hasPoints(frame) && !frame.strike && frame.id === 10">{{frame.framePoints[1]}}</span>
+        <span v-if="hasPoints(frame) && !frame.strike && frame.id === 10">{{lastSpare(frame.framePoints, 1)}}</span>
       </div>
       <div class="frame-roll spare" v-if="frame.id === 10">
-        <span v-if="hasPoints(frame) && !frame.strike">{{lastSpare(frame.framePoints)}}</span>
+        <span v-if="hasPoints(frame) && !frame.strike">{{lastSpare(frame.framePoints, 2)}}</span>
       </div>
       <div class="points">
         <span v-if="frame.framePoints && frame.framePoints.length > 0">{{frameResult(frame.framePoints)}}</span>
@@ -45,8 +45,8 @@ export default {
     lastStrike(pins) {
       return pins === 10 ? 'X' : pins;
     },
-    lastSpare(pins) {
-      return pins[2] === 10 ? 'X' : pins[0] + pins[1] + pins[2] === 10 ? '/' : pins[2];
+    lastSpare(points, i) {
+      return i === 2 ? points[2] === 10 ? 'X' : points[2] : points[1] === 10 ? 'X' : points[0] + points[1] === 10 ? '/' : points[1];;
     },
   },
 };
@@ -77,6 +77,7 @@ export default {
     max-width: 60px;
     width: 60px;
     border-radius: 4px;
+    font-weight: 500;;
     .frame-number {
       flex-grow: 2;
       text-align: left;
@@ -99,7 +100,7 @@ export default {
     .points {
       flex-grow: 2;
       text-align: center;
-      font-weight: 600;
+      font-weight: 700;
       min-height: 20px;
       min-width: 100%;
       border-top: 1px solid $primary;

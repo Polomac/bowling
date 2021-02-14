@@ -54,7 +54,7 @@ export default {
 
       } else if (leftPins >= 0 && this.rollNumber >= 1) {
         let isStrike = false;
-        let isSpare = leftPins === 0 && this.rollNumber <= 3;
+        let isSpare = leftPins === 0 && this.rollNumber < 3;
         this.setTempFrame(isStrike, isSpare);
         this.rollNumber += 1;
         this.tempPins = leftPins;

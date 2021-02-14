@@ -73,15 +73,20 @@ export default {
   .frame-score {
     display: flex;
     flex-wrap: wrap;
-    border: 2px solid $primary;
+    box-shadow: 0px 0px 2px rgba(0,0,0,0.35);
     max-width: 60px;
     width: 60px;
+    border-radius: 4px;
     .frame-number {
       flex-grow: 2;
-      text-align: center;
-      font-weight: 500;
+      text-align: left;
+      padding-left: 5px;
+      font-weight: 600;
       width: 100%;
-      border-bottom: 1px solid $primary;
+      color: white;
+      background: $title-light;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
     }
     .frame-roll {
       width: 50%;
@@ -94,10 +99,12 @@ export default {
     .points {
       flex-grow: 2;
       text-align: center;
-      font-weight: 500;
-      border-top: 1px solid $primary;
+      font-weight: 600;
       min-height: 20px;
       min-width: 100%;
+      border-top: 1px solid $primary;
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
     }
     &.thirds {
       .frame-roll {

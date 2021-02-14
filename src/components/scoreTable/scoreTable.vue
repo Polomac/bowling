@@ -60,7 +60,7 @@ export default {
   font-size: 0.875em;
   background: white;
   padding: 10px;
-  justify-content: space-between;
+  justify-content: space-evenly;
   box-shadow: 0px 0px 4px rgba(0,0,0,0.35);
   border-radius: 4px;
   flex-wrap: wrap;
@@ -77,7 +77,8 @@ export default {
     max-width: 60px;
     width: 60px;
     border-radius: 4px;
-    font-weight: 500;;
+    font-weight: 500;
+    margin-bottom: 20px;
     .frame-number {
       flex-grow: 2;
       text-align: left;

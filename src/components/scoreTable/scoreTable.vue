@@ -37,7 +37,7 @@ export default {
   },
   methods:{
     frameResult(framePoints) {
-      return framePoints.reduce((a,b) => a+b);
+      return framePoints.reduce((a, b) => a + b);
     },
     hasPoints(frame) {
       return frame && frame.framePoints;
